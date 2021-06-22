@@ -93,6 +93,28 @@ lines(density(df_log$log_LOS), col = "orange", lwd = 2)
 #df_logの散布図行列を描いてみる
 ggpairs(df_log)
 
+#おまけ：もう少し良い感じにしてみる
+#[Ref1.: https://sawad0613.github.io/.github.io-ggpairs/]
+#[Ref2.: https://assabu.exblog.jp/28933942/]
+
+#まずは，データセットの値をクラス変換する(例：性別0/1を実数値から文字列にする)
+df_plot <- df_log %>% select(c(LOS, log_LOS, Age))
+
+df_plot %>% mutate(Sex_cat = as.character(df_log$Sex)) -> df_plot
+df_plot %>% mutate(DM_cat  = as.character(df_log$DM)) -> df_plot
+df_plot %>% mutate(Sv_ord  = as.ordered(df_log$Severity)) -> df_plot  #重症度は順序値へ
+df_plot %>% mutate(NT_cat  = as.character(df_log$New_Treatment)) -> df_plot
+
+glimpse(df_plot)
+
+df_plot %>% 
+  ggpairs(
+    upper = list(continuous = "cor", combo = "box_no_facet", discrete = "count"),
+    lower = list(continuous = "points", combo = "facethist", discrete = "facetbar"),
+    diag  = list(continuous = "densityDiag", discrete = "barDiag"), 
+    mapping = aes(color = Sex_cat)
+  )
+                      
 #外れ値の確認と除去
 #LOS(平均在院日数)と独立変数をプロットして外れ値をみる
 plot(df_Reg$Age, df_Reg$LOS)
