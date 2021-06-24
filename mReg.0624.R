@@ -373,3 +373,40 @@ ssd
 beta_r1 <- result_b[2:6, 1]*ssd[2:6]/s[1]
 beta_r1
 #result_b[2:6, 1] #独立変数の偏回帰係数を抽出したもの
+
+                      
+#実測LOS vs 対数LOS
+options(scipen=100)  #指数表記をやめさせる(?)
+#実測LOS
+result_r1
+##偏回帰係数（bまたはB）を取り出す
+result_b <- result_r1$coefficients[1:6, 1:2]
+##偏回帰係数（bまたはB）の95%CIの算出
+result_CI <- confint(model_r1)
+#t値とそのp値を取り出す
+result_tp <- result_r1$coefficients[1:6, 3:4]
+#独立変数間のVIF
+vif_r1 <- vif(model_r1)
+VIF_r1 <- c(0, vif_r1[1:5] )  #切片は空白なのでとりあえず0を入れる
+#テーブル化
+table_r1 <- cbind(result_b, result_CI, result_tp, VIF_r1)
+
+#対数LOS
+result_log
+##偏回帰係数（bまたはB）を取り出す
+result_logb <- result_log$coefficients[1:6, 1:2]
+##偏回帰係数（bまたはB）の95%CIの算出
+result_logCI <- confint(model_log)
+#t値とそのp値を取り出す
+result_logtp <- result_log$coefficients[1:6, 3:4]
+#独立変数間のVIF
+vif_log <- vif(model_log)
+VIF_log <- c(0, vif_log[1:5] )  #切片は空白なのでとりあえず0を入れる
+#テーブル化
+table_log <- cbind(result_logb, result_logCI, result_logtp, VIF_log)
+
+#中身の確認：実測LOS vs 対数LOS
+#LOS実測値
+round(table_r1, digits = 3)   #表が見にくいので便宜上小数点3桁までに丸める
+#LOS対数変換値
+round(table_log, digits = 3)  #表が見にくいので便宜上小数点3桁までに丸める
