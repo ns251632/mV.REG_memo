@@ -410,3 +410,13 @@ table_log <- cbind(result_logb, result_logCI, result_logtp, VIF_log)
 round(table_r1, digits = 3)   #表が見にくいので便宜上小数点3桁までに丸める
 #LOS対数変換値
 round(table_log, digits = 3)  #表が見にくいので便宜上小数点3桁までに丸める
+
+                      #モデルのフィット：モデルの評価(R2, adjR2, AIC)
+table_rM <- cbind(R2_r1 = R2(model_r1), adjR2_r1 = adjR2(model_r1), AIC_r1 = result_r1$aic)
+table_lM <- cbind(R2_l1 = R2(model_log), adjR2_l1 = adjR2(model_log), AIC_l1 = result_log$aic)
+
+#中身の確認：実測LOS vs 対数LOS
+#LOS実測値
+round(table_rM, digits = 3)
+#LOS対数変換値
+round(table_lM, digits = 3)
